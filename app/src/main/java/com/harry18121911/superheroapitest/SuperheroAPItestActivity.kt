@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
+import androidx.core.view.isVisible
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.Gson
 import com.harry18121911.superheroapitest.databinding.ActivitySuperheroBinding
 import kotlinx.coroutines.CoroutineScope
@@ -18,6 +20,8 @@ class SuperheroAPItestActivity: AppCompatActivity() {
     private lateinit var  binding : ActivitySuperheroBinding
 
     private lateinit var  retrofit: Retrofit
+
+    private lateinit var  adapter: SuperheroAdapter
 
     override fun onCreate(savedInstanceState: Bundle?){
         super.onCreate(savedInstanceState)
@@ -41,13 +45,27 @@ class SuperheroAPItestActivity: AppCompatActivity() {
             }
 
         })
+
+        adapter = SuperheroAdapter()
+        binding.rvSuperhero.setHasFixedSize(true)
+        binding.rvSuperhero.layoutManager = LinearLayoutManager(this)
+        binding.rvSuperhero.adapter = adapter
     }
 
     private fun searchByName(query:String){
+        binding.progressBar.isVisible = true
         CoroutineScope(Dispatchers.IO).launch {
             val myResponse = retrofit.create(ApiService::class.java).getSuperheroes(query)
             if (myResponse.isSuccessful){
                 Log.i("APITEST","SUCCESS")
+                val response: SuperheroDataResponse? = myResponse.body()
+                if(response != null){
+                    Log.i("APITEST",response.toString())
+                    runOnUiThread {
+                        adapter.updateList(response.forms)
+                        binding.progressBar.isVisible = false
+                    }
+                }
             }else{
                 Log.i("APITEST", "ERROR IT TYPE, CHANGE")
             }
