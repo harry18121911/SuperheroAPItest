@@ -62,7 +62,7 @@ class SuperheroAPItestActivity: AppCompatActivity() {
                 if(response != null){
                     Log.i("APITEST",response.toString())
                     runOnUiThread {
-                        adapter.updateList(response.forms)
+                        adapter.updateList(response.superHeroes)
                         binding.progressBar.isVisible = false
                     }
                 }
@@ -75,10 +75,11 @@ class SuperheroAPItestActivity: AppCompatActivity() {
 
     private fun getRetrofit(): Retrofit{
         val retrofit = Retrofit.Builder()
-            .baseUrl("https://pokeapi.co/")
+            .baseUrl("https://superheroapi.com")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
         return retrofit
     }
 }
+

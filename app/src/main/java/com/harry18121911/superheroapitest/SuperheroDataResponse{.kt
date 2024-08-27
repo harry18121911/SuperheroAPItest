@@ -2,8 +2,10 @@ package com.harry18121911.superheroapitest
 
 import com.google.gson.annotations.SerializedName
 
-data class SuperheroDataResponse(@SerializedName("weight") val weight: Int, @SerializedName("forms") val forms:List<SuperheroItemResponse>)
+data class SuperheroDataResponse(@SerializedName("response") val response: String, @SerializedName("results") val superHeroes:List<SuperheroItemResponse>)
 
-data class SuperheroItemResponse(@SerializedName("name") val superHeroName :String,
-                                 @SerializedName("url") val superHeroURL: String)
+data class SuperheroItemResponse(@SerializedName("id") val superHeroId :String,
+                                 @SerializedName("name") val name: String,
+                                 @SerializedName("image") val superHeroImage: SuperheroImageResponse)
 
+data class SuperheroImageResponse(@SerializedName("url") val url:String )
