@@ -1,12 +1,11 @@
 package com.harry18121911.superheroapitest
-
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 
 class SuperheroAdapter (var superheroList:List<SuperheroItemResponse> = emptyList(), private val onItemSelected:(String)->Unit):RecyclerView.Adapter<SuperheroViewHolder>(){
 
-    fun updateList(superheroList: List<SuperheroItemResponse>){
+    fun updateList(superheroList: List<SuperheroItemResponse> = emptyList()){
         this.superheroList = superheroList
         notifyDataSetChanged()
     }

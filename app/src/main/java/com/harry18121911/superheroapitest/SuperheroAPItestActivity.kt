@@ -57,15 +57,23 @@ class SuperheroAPItestActivity: AppCompatActivity() {
     private fun searchByName(query:String){
         binding.progressBar.isVisible = true
         CoroutineScope(Dispatchers.IO).launch {
-            val myResponse = retrofit.create(ApiService::class.java).getSuperheroes(query)
+            var myResponse = retrofit.create(ApiService::class.java).getSuperheroes(query)
             if (myResponse.isSuccessful){
                 Log.i("APITEST","SUCCESS")
                 val response: SuperheroDataResponse? = myResponse.body()
-                if(response != null){
-                    Log.i("APITEST",response.toString())
-                    runOnUiThread {
-                        adapter.updateList(response.superHeroes)
-                        binding.progressBar.isVisible = false
+                if (response != null) {
+                    if(response.superHeroes != null){
+                        Log.i("APITEST",response.toString())
+                        runOnUiThread {
+                            adapter.updateList(response.superHeroes)
+                            binding.progressBar.isVisible = false
+                        }
+                    }else{
+                        Log.i("APITEST", "FINDING NULL ERROR")
+                        runOnUiThread {
+                            adapter.updateList()
+                            binding.progressBar.isVisible = false
+                        }
                     }
                 }
             }else{
